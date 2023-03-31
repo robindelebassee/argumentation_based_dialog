@@ -12,3 +12,4 @@ class CriterionName(Enum):
     DURABILITY = 2
     ENVIRONMENT_IMPACT = 3
     NOISE = 4
+    COST_PER_KM = 5

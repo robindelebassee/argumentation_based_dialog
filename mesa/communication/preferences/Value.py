@@ -9,6 +9,6 @@ class Value(Enum):
     """
     VERY_BAD = 0
     BAD = 1
-    AVERAGE = 2
+    #AVERAGE = 2
     GOOD = 3
     VERY_GOOD = 4

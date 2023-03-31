@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import random as rd
 
 from communication.preferences.CriterionName import CriterionName
 from communication.preferences.CriterionValue import CriterionValue
@@ -18,8 +19,19 @@ class Preferences:
     def __init__(self):
         """Creates a new Preferences object.
         """
-        self.__criterion_name_list = []
-        self.__criterion_value_list = []
+        criterion_name_list = [
+            CriterionName.PRODUCTION_COST, 
+            CriterionName.CONSUMPTION,
+            CriterionName.DURABILITY,
+            CriterionName.ENVIRONMENT_IMPACT,
+            CriterionName.NOISE,
+            CriterionName.COST_PER_KM
+        ]
+        ordered_criterions = rd.shuffle(criterion_name_list)
+        self.__criterion_name_list = ordered_criterions
+        
+        self.__criterion_value_list = [] # ordre pas important
+        
 
     def get_criterion_name_list(self):
         """Returns the list of criterion name.
