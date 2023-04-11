@@ -1,6 +1,5 @@
-# from communication.preferences.Item import Item
+from communication.preferences.Item import Item
 
-from Item import Item
 
 class ElectricEngine(Item):
     """Type of engine that will be discussed.

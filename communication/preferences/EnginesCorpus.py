@@ -1,8 +1,5 @@
-# from communication.preferences.DieselEngine import DieselEngine
-# from communication.preferences.ElectricEngine import ElectricEngine
-
-from DieselEngine import DieselEngine
-from ElectricEngine import ElectricEngine
+from communication.preferences.DieselEngine import DieselEngine
+from communication.preferences.ElectricEngine import ElectricEngine
 
 
 class EnginesCorpus:

@@ -1,16 +1,9 @@
 #!/usr/bin/env python3
 import random as rd
 
-# from communication.preferences.CriterionName import CriterionName
-# from communication.preferences.CriterionValue import CriterionValue
-# from communication.preferences.Item import Item
-# from communication.preferences.Value import Value
-
-from CriterionName import CriterionName
-from CriterionValue import CriterionValue
-from Item import Item
-from Value import Value
-from EnginesCorpus import EnginesCorpus
+from communication.preferences.CriterionName import CriterionName
+from communication.preferences.CriterionValue import CriterionValue
+from communication.preferences.Value import Value
 
 
 class Preferences:
@@ -178,55 +171,3 @@ class Preferences:
         is_top_item = self.__item_ordered_list.index(item) < int(0.1 * len(self.__item_ordered_list)) + 1
         return is_top_item
 
-
-if __name__ == '__main__':
-    """Testing the Preferences class.
-    """
-    
-    engines = EnginesCorpus(10)
-    engines_list = engines.electrics + engines.diesels
-    
-    agent_pref = Preferences(engines_list)
-    # agent_pref.set_criterion_name_list([CriterionName.PRODUCTION_COST, CriterionName.ENVIRONMENT_IMPACT,
-    #                                     CriterionName.CONSUMPTION, CriterionName.DURABILITY,
-    #                                     CriterionName.NOISE, CriterionName.COST_PER_KM])
-
-    # diesel_engine = Item("Diesel Engine", "A super cool diesel engine")
-    # agent_pref.add_criterion_value(CriterionValue(diesel_engine, CriterionName.PRODUCTION_COST,
-    #                                               Value.VERY_GOOD))
-    # agent_pref.add_criterion_value(CriterionValue(diesel_engine, CriterionName.CONSUMPTION,
-    #                                               Value.GOOD))
-    # agent_pref.add_criterion_value(CriterionValue(diesel_engine, CriterionName.DURABILITY,
-    #                                               Value.VERY_GOOD))
-    # agent_pref.add_criterion_value(CriterionValue(diesel_engine, CriterionName.ENVIRONMENT_IMPACT,
-    #                                               Value.VERY_BAD))
-    # agent_pref.add_criterion_value(CriterionValue(diesel_engine, CriterionName.NOISE,
-    #                                               Value.VERY_BAD))
-
-    # electric_engine = Item("Electric Engine", "A very quiet engine")
-    # agent_pref.add_criterion_value(CriterionValue(electric_engine, CriterionName.PRODUCTION_COST,
-    #                                               Value.BAD))
-    # agent_pref.add_criterion_value(CriterionValue(electric_engine, CriterionName.CONSUMPTION,
-    #                                               Value.VERY_BAD))
-    # agent_pref.add_criterion_value(CriterionValue(electric_engine, CriterionName.DURABILITY,
-    #                                               Value.GOOD))
-    # agent_pref.add_criterion_value(CriterionValue(electric_engine, CriterionName.ENVIRONMENT_IMPACT,
-    #                                               Value.VERY_GOOD))
-    # agent_pref.add_criterion_value(CriterionValue(electric_engine, CriterionName.NOISE,
-    #                                               Value.VERY_GOOD))
-    
-    diesel_engine = engines.diesels[0]
-    electric_engine = engines.electrics[0]
-    
-    """test list of preferences"""
-    print(diesel_engine)
-    print(electric_engine)
-    print('Production cost value for diesel engine is : ', diesel_engine.get_value(agent_pref, CriterionName.PRODUCTION_COST))
-    print('The agent prefer the criterion CONSUMPTION over NOISE : ', agent_pref.is_preferred_criterion(CriterionName.CONSUMPTION, CriterionName.NOISE))
-    print('Electric Engine > Diesel Engine : {}'.format(agent_pref.is_preferred_item(electric_engine, diesel_engine)))
-    print('Diesel Engine > Electric Engine : {}'.format(agent_pref.is_preferred_item(diesel_engine, electric_engine)))
-    print('Electric Engine (for agent 1) = {}'.format(electric_engine.get_score(agent_pref)))
-    print('Diesel Engine (for agent 1) = {}'.format(diesel_engine.get_score(agent_pref)))
-    print('Most preferred item is : {}'.format(agent_pref.most_preferred(engines_list, evaluation_needed=True).get_name()))
-    print('Is eletric engine among 10 % preferred items: {}'.format(agent_pref.is_item_among_top_10_percent(electric_engine, item_list=engines_list, evaluation_needed=False)))
-    print([item._Item__name for item in agent_pref._Preferences__item_ordered_list])
