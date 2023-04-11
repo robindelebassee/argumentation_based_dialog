@@ -1,5 +1,8 @@
-from communication.preferences.DieselEngine import DieselEngine
-from communication.preferences.ElectricEngine import ElectricEngine
+# from communication.preferences.DieselEngine import DieselEngine
+# from communication.preferences.ElectricEngine import ElectricEngine
+
+from DieselEngine import DieselEngine
+from ElectricEngine import ElectricEngine
 
 
 class EnginesCorpus:
@@ -21,7 +24,8 @@ class EnginesCorpus:
         else: 
             _corpus_size = corpus_size
         
-        nb_iter = _corpus_size / 2
+        nb_iter = _corpus_size // 2
+        print(nb_iter * 2)
         pad_size = 1 / (nb_iter - 1)
         unique_id = 1
         
@@ -31,9 +35,9 @@ class EnginesCorpus:
         for iter in range(nb_iter):
             
             quality_factor = pad_size * iter # quality_factor between 0 and 1 to define the engines
-            electric = ElectricEngine(unique_id, quality_factor)
+            electric = ElectricEngine(str(unique_id), quality_factor)
             electrics.append(electric)
-            diesel = DieselEngine(unique_id+1, quality_factor)
+            diesel = DieselEngine(str(unique_id+1), quality_factor)
             diesels.append(diesel)
             unique_id += 2
         
