@@ -25,7 +25,6 @@ class EnginesCorpus:
             _corpus_size = corpus_size
         
         nb_iter = _corpus_size // 2
-        print(nb_iter * 2)
         pad_size = 1 / (nb_iter - 1)
         unique_id = 1
         

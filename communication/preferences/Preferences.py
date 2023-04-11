@@ -37,6 +37,8 @@ class Preferences:
         """
         
         self.__item_list = item_list
+        self.__item_scores = []
+        self.__item_ordered_list = []
         
         criterion_name_list = [
             CriterionName.PRODUCTION_COST, 
@@ -163,8 +165,16 @@ class Preferences:
             if evaluation_needed:
                 self.__criterion_value_list = self.evaluate_items(item_list)
             self.__item_list = item_list
+        
+        assert self.__item_list, 'No existing item list assigned to the preferences object.'
+        
+        if not self.__item_scores or item_list:
             self.__item_scores = [item.get_score(self) for item in self.__item_list]
-            self.__item_ordered_list = [item for _,item in sorted(zip(self.__item_scores,self.__item_list))]
+        
+        if not self.__item_ordered_list or item_list:
+            sorted_score_index = sorted(zip(self.__item_scores,range(len(self.__item_list))), reverse=True)
+            self.__item_ordered_list = [self.__item_list[index] for _,index in sorted_score_index]
+        
         is_top_item = self.__item_ordered_list.index(item) < int(0.1 * len(self.__item_ordered_list)) + 1
         return is_top_item
 
@@ -208,15 +218,15 @@ if __name__ == '__main__':
     diesel_engine = engines.diesels[0]
     electric_engine = engines.electrics[0]
     
-    print(agent_pref.get_criterion_value_list())
-
     """test list of preferences"""
     print(diesel_engine)
     print(electric_engine)
-    print(diesel_engine.get_value(agent_pref, CriterionName.PRODUCTION_COST))
-    print(agent_pref.is_preferred_criterion(CriterionName.CONSUMPTION, CriterionName.NOISE))
+    print('Production cost value for diesel engine is : ', diesel_engine.get_value(agent_pref, CriterionName.PRODUCTION_COST))
+    print('The agent prefer the criterion CONSUMPTION over NOISE : ', agent_pref.is_preferred_criterion(CriterionName.CONSUMPTION, CriterionName.NOISE))
     print('Electric Engine > Diesel Engine : {}'.format(agent_pref.is_preferred_item(electric_engine, diesel_engine)))
     print('Diesel Engine > Electric Engine : {}'.format(agent_pref.is_preferred_item(diesel_engine, electric_engine)))
     print('Electric Engine (for agent 1) = {}'.format(electric_engine.get_score(agent_pref)))
     print('Diesel Engine (for agent 1) = {}'.format(diesel_engine.get_score(agent_pref)))
-    print('Most preferred item is : {}'.format(agent_pref.most_preferred([diesel_engine, electric_engine], evaluation_needed=False).get_name()))
+    print('Most preferred item is : {}'.format(agent_pref.most_preferred(engines_list, evaluation_needed=True).get_name()))
+    print('Is eletric engine among 10 % preferred items: {}'.format(agent_pref.is_item_among_top_10_percent(electric_engine, item_list=engines_list, evaluation_needed=False)))
+    print([item._Item__name for item in agent_pref._Preferences__item_ordered_list])
