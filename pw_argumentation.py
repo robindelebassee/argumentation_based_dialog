@@ -17,6 +17,9 @@ class ArgumentAgent(CommunicatingAgent):
         self.preferences = None
         self.list_items = None
         self.interlocutor = None
+        self.proposition_made = False
+        self.has_committed = False
+        self.return_commit_received = False
         
     def step(self):
         super().step()
@@ -25,17 +28,31 @@ class ArgumentAgent(CommunicatingAgent):
         if new_messages:
             [new_message] = new_messages
             if new_message._Message__message_performative == MessagePerformative.PROPOSE:
+                self.proposition_made = True
                 item_concerned = self.find_item_from_name(new_message.get_content())
                 if self.preferences.is_item_among_top_10_percent(item_concerned, evaluation_needed=False):
                     self.accept_item(item_concerned)
                 else:
                     self.ask_why_item(item_concerned)
-            elif new_message._Message__message_performative in [MessagePerformative.ACCEPT, MessagePerformative.COMMIT] :
+            elif new_message._Message__message_performative == MessagePerformative.ACCEPT:
                 item_concerned = self.find_item_from_name(new_message.get_content())
                 self.commit_item(item_concerned)
-        else:
+            elif new_message._Message__message_performative == MessagePerformative.COMMIT:
+                self.return_commit_received = True
+                if self.has_committed:
+                    self.is_done()
+                else:
+                    item_concerned = self.find_item_from_name(new_message.get_content())
+                    self.commit_item(item_concerned)
+            elif new_message._Message__message_performative == MessagePerformative.ASK_WHY:
+                self.argue_item()
+        elif not self.proposition_made:
             proposed_item = self.preferences.most_preferred()
             self.propose_item(proposed_item)
+        elif self.has_committed and self.return_commit_received:
+            self.is_done()
+        else:
+            self.stand_by()
 
     def get_preference(self):
         return self.preference
@@ -50,6 +67,7 @@ class ArgumentAgent(CommunicatingAgent):
     def propose_item(self, item):
         message = Message(self.get_name(), self.interlocutor, MessagePerformative.PROPOSE, item._Item__name)
         self.send_message(message)
+        self.proposition_made = True
         print(self.get_name(), ' - ', message._Message__message_performative, '(', item._Item__name, ')')
     
     def accept_item(self, item):
@@ -65,7 +83,19 @@ class ArgumentAgent(CommunicatingAgent):
     def commit_item(self, item):
         message = Message(self.get_name(), self.interlocutor, MessagePerformative.COMMIT, item._Item__name)
         self.send_message(message)
+        self.has_committed = True
         print(self.get_name(), ' - ', message._Message__message_performative, '(', item._Item__name, ')')
+    
+    def argue_item(self):
+        message = Message(self.get_name(), self.interlocutor, MessagePerformative.ARGUE, 'Empty content')
+        self.send_message(message)
+        print(self.get_name(), ' - ', message._Message__message_performative, '(', 'Empty content', ')')
+    
+    def stand_by(self):
+        print(self.get_name(), ' -  Stand by, waiting for answers from {}'.format(self.interlocutor))
+    
+    def is_done(self):
+        print(self.get_name(), ' -  Stand by, has agreed with {}'.format(self.interlocutor))
     
     def find_item_from_name(self, item_name):
         for item in self.list_items:
@@ -108,7 +138,7 @@ if __name__ == "__main__":
     
     argument_model = ArgumentModel()
     print("Agents created")
-    for _ in range(2):
+    for _ in range(5):
         argument_model.step()
 
     # To be completed
