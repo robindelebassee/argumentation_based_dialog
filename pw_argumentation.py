@@ -55,7 +55,7 @@ class ArgumentAgent(CommunicatingAgent):
             self.stand_by()
 
     def get_preference(self):
-        return self.preference
+        return self.preferences
 
     def generate_preferences(self, List_items):
         self.list_items = List_items
