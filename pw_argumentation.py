@@ -3,48 +3,112 @@ from mesa.time import RandomActivation
 
 from communication.agent.CommunicatingAgent import CommunicatingAgent
 from communication.message.MessageService import MessageService
+from communication.preferences.Preferences import Preferences
+from communication.preferences.EnginesCorpus import EnginesCorpus
+from communication.message.Message import Message
+from communication.message.MessagePerformative import MessagePerformative
 
 
-class ArgumentAgent ( CommunicatingAgent ):
-    """ ArgumentAgent which inherit from CommunicatingAgent .
+class ArgumentAgent(CommunicatingAgent):
+    """ ArgumentAgent which inherit from CommunicatingAgent.
     """
-    def __init__ (self , unique_id , model , name , preferences ):
-        super (). __init__ ( unique_id , model , name , preferences )
-        self . preference = preferences
+    def __init__ (self, unique_id, model, name):
+        super().__init__(unique_id, model, name)
+        self.preferences = None
+        self.list_items = None
+        self.interlocutor = None
         
-    def step ( self ):
-        super (). step ()
+    def step(self):
+        super().step()
+        # check mailbox for message
+        new_messages = self.get_new_messages() # it is supposed to be a singleton
+        if new_messages:
+            [new_message] = new_messages
+            if new_message._Message__message_performative == MessagePerformative.PROPOSE:
+                item_concerned = self.find_item_from_name(new_message.get_content())
+                if self.preferences.is_item_among_top_10_percent(item_concerned, evaluation_needed=False):
+                    self.accept_item(item_concerned)
+                else:
+                    self.ask_why_item(item_concerned)
+            elif new_message._Message__message_performative in [MessagePerformative.ACCEPT, MessagePerformative.COMMIT] :
+                item_concerned = self.find_item_from_name(new_message.get_content())
+                self.commit_item(item_concerned)
+        else:
+            proposed_item = self.preferences.most_preferred()
+            self.propose_item(proposed_item)
 
-    def get_preference ( self ):
-        return self . preference
+    def get_preference(self):
+        return self.preference
 
-    def generate_preferences (self , List_items ):
-        # see question 3
-        # To be completed
-        return
+    def generate_preferences(self, List_items):
+        self.list_items = List_items
+        self.preferences = Preferences(List_items)
+    
+    def set_interlocutor(self, other_agent):
+        self.interlocutor = other_agent.get_name()
+    
+    def propose_item(self, item):
+        message = Message(self.get_name(), self.interlocutor, MessagePerformative.PROPOSE, item._Item__name)
+        self.send_message(message)
+        print(self.get_name(), ' - ', message._Message__message_performative, '(', item._Item__name, ')')
+    
+    def accept_item(self, item):
+        message = Message(self.get_name(), self.interlocutor, MessagePerformative.ACCEPT, item._Item__name)
+        self.send_message(message)
+        print(self.get_name(), ' - ', message._Message__message_performative, '(', item._Item__name, ')')
+    
+    def ask_why_item(self, item):
+        message = Message(self.get_name(), self.interlocutor, MessagePerformative.ASK_WHY, item._Item__name)
+        self.send_message(message)
+        print(self.get_name(), ' - ', message._Message__message_performative, '(', item._Item__name, ')')
+        
+    def commit_item(self, item):
+        message = Message(self.get_name(), self.interlocutor, MessagePerformative.COMMIT, item._Item__name)
+        self.send_message(message)
+        print(self.get_name(), ' - ', message._Message__message_performative, '(', item._Item__name, ')')
+    
+    def find_item_from_name(self, item_name):
+        for item in self.list_items:
+            if item._Item__name == item_name:
+                return item
+    
 
-class ArgumentModel ( Model ):
-    """ ArgumentModel which inherit from Model .
+class ArgumentModel(Model):
+    """ ArgumentModel which inherit from Model.
     """
-    def __init__ ( self ):
-        self . schedule = RandomActivation ( self )
-        self . __messages_service = MessageService ( self . schedule )
+    def __init__(self):
+        self.schedule = RandomActivation(self)
+        self.__messages_service = MessageService(self.schedule)
+        self.current_id = 0
 
         # To be completed
-        #
-        # a = ArgumentAgent (id , " agent_name ")
-        # a. generate_preferences ( preferences )
-        # self . schedule .add(a)
-        # ...
+        corpus = EnginesCorpus(10)
+        list_items = corpus.generate_engines_list()
+        
+        agent1 = ArgumentAgent(self.next_id(), self, "agent1")
+        agent1.generate_preferences(list_items)
+        self.schedule.add(agent1)
+        
+        agent2 = ArgumentAgent(self.next_id(), self, "agent2")
+        agent2.generate_preferences(list_items)
+        self.schedule.add(agent2)
+        
+        agent1.set_interlocutor(agent2)
+        agent2.set_interlocutor(agent1)
 
-        self . running = True
+        self.running = True
 
-    def step ( self ):
-        self . __messages_service . dispatch_messages ()
-        self . schedule . step ()
+    def step(self):
+        self.__messages_service.dispatch_messages()
+        self.schedule.step()
+    
 
 
-if __name__ == " __main__ ":
-    argument_model = ArgumentModel ()
+if __name__ == "__main__":
+    
+    argument_model = ArgumentModel()
+    print("Agents created")
+    for _ in range(2):
+        argument_model.step()
 
     # To be completed

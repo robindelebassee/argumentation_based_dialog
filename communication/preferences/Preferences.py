@@ -140,9 +140,9 @@ class Preferences:
         """
         # To be completed
         if item_list:
-            if evaluation_needed:
-                self.__criterion_value_list = self.evaluate_items(item_list)
             self.__item_list = item_list
+        if evaluation_needed:
+            self.__criterion_value_list = self.evaluate_items(self.__item_list)
             self.__item_scores = [item.get_score(self) for item in self.__item_list]
         score_max = max(self.__item_scores)
         return self.__item_list[self.__item_scores.index(score_max)]

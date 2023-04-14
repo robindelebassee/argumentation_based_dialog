@@ -31,12 +31,16 @@ class EnginesCorpus:
         for iter in range(nb_iter):
             
             quality_factor = pad_size * iter # quality_factor between 0 and 1 to define the engines
-            electric = ElectricEngine(str(unique_id), quality_factor)
+            name1 = 'Electric Engine {}'.format(unique_id)
+            name2 = 'Diesel Engine {}'.format(unique_id)
+            electric = ElectricEngine(name1, quality_factor)
             electrics.append(electric)
-            diesel = DieselEngine(str(unique_id+1), quality_factor)
+            diesel = DieselEngine(name2, quality_factor)
             diesels.append(diesel)
-            unique_id += 2
+            unique_id += 1
         
         self.electrics = electrics
         self.diesels = diesels
-        
+    
+    def generate_engines_list(self):
+        return self.electrics + self.diesels
