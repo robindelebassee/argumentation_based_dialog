@@ -93,9 +93,9 @@ class ArgumentAgent(CommunicatingAgent):
         """Send first argument after receiving ASK_WHY message."""
         
         self.current_argument = Argument(True, item._Item__name)
-        self.current_argument.List_supporting_proposal(item, self.preferences)
+        self.current_argument.List_supporting_proposal(item._Item__name, self.preferences)
         _, couple_value = self.current_argument.select_best_premiss()
-        arg_content = f'{self.current_argument.boolean_decision} {item._Item__name}, {str(couple_value)}'
+        arg_content = f'{"NOT " if not(self.current_argument.boolean_decision) else ""}{item._Item__name}, {str(couple_value)}'
         
         message = Message(self.get_name(), self.interlocutor, MessagePerformative.ARGUE, arg_content)
         self.send_message(message)
