@@ -7,6 +7,7 @@ from communication.preferences.Preferences import Preferences
 from communication.preferences.EnginesCorpus import EnginesCorpus
 from communication.message.Message import Message
 from communication.message.MessagePerformative import MessagePerformative
+from arguments.Argument import Argument
 
 
 class ArgumentAgent(CommunicatingAgent):
@@ -20,6 +21,7 @@ class ArgumentAgent(CommunicatingAgent):
         self.proposition_made = False
         self.has_committed = False
         self.return_commit_received = False
+        self.current_argument = None
         
     def step(self):
         super().step()
@@ -45,7 +47,8 @@ class ArgumentAgent(CommunicatingAgent):
                     item_concerned = self.find_item_from_name(new_message.get_content())
                     self.commit_item(item_concerned)
             elif new_message._Message__message_performative == MessagePerformative.ASK_WHY:
-                self.argue_item()
+                item_concerned = self.find_item_from_name(new_message.get_content())
+                self.support_proposal(item_concerned)
         elif not self.proposition_made:
             proposed_item = self.preferences.most_preferred()
             self.propose_item(proposed_item)
@@ -85,8 +88,26 @@ class ArgumentAgent(CommunicatingAgent):
         self.send_message(message)
         self.has_committed = True
         print(self.get_name(), ' - ', message._Message__message_performative, '(', item._Item__name, ')')
+        
+    def support_proposal(self, item):
+        """Send first argument after receiving ASK_WHY message."""
+        
+        self.current_argument = Argument(True, item._Item__name)
+        self.current_argument.List_supporting_proposal(item, self.preferences)
+        _, couple_value = self.current_argument.select_best_premiss()
+        arg_content = f'{self.current_argument.boolean_decision} {item._Item__name}, {str(couple_value)}'
+        
+        message = Message(self.get_name(), self.interlocutor, MessagePerformative.ARGUE, arg_content)
+        self.send_message(message)
+        print(self.get_name(), ' - ', message._Message__message_performative, '(', arg_content, ')')
     
-    def argue_item(self):
+    def argue_item(self, item, previous_arg):
+        """Counter an argument"""
+        # TODO:
+        # case 1 : arguing/counter-arguing for the first time for an item
+        if (not self.current_argument) or self.current_argument.item_name != item._Item__name:
+            self.current_argument = Argument(False, item._Item__name)
+            
         message = Message(self.get_name(), self.interlocutor, MessagePerformative.ARGUE, 'Empty content')
         self.send_message(message)
         print(self.get_name(), ' - ', message._Message__message_performative, '(', 'Empty content', ')')
@@ -111,7 +132,6 @@ class ArgumentModel(Model):
         self.__messages_service = MessageService(self.schedule)
         self.current_id = 0
 
-        # To be completed
         corpus = EnginesCorpus(10)
         list_items = corpus.generate_engines_list()
         
