@@ -35,7 +35,7 @@ def evaluation_metric(agent1_prefs, agent2_prefs, agreed_item):
 
 if __name__ == "__main__":
     
-    n = 100
+    n = 50
     
     sys.stdout = open(f'outputs/experiments_{n}_items.txt', 'a')
     

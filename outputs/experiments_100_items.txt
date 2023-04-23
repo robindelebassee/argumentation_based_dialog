@@ -199,3 +199,255 @@ agent2  -  Stand by, has agreed with agent1
 agent1  -  Stand by, has agreed with agent2
 Electric Engine 47 (Electric engine with quality factor 0.9387755102040816)
 score =  0.41666666666666663
+Agents created
+agent1  -  PROPOSE ( Electric Engine 44 )
+agent2  -  ACCEPT ( Electric Engine 44 )
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  COMMIT ( Electric Engine 44 )
+agent2  -  COMMIT ( Electric Engine 44 )
+agent1  -  Stand by, has agreed with agent2
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+Electric Engine 44 (Electric engine with quality factor 0.8775510204081632)
+
+score =  0.24285714285714285
+
+
+
+---------------------------------------------------------------------------------------
+
+
+
+
+Agents created
+agent2  -  PROPOSE ( Electric Engine 42 )
+agent1  -  ACCEPT ( Electric Engine 42 )
+agent1  -  Stand by, waiting for answers from agent2
+agent2  -  COMMIT ( Electric Engine 42 )
+agent1  -  COMMIT ( Electric Engine 42 )
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+Electric Engine 42 (Electric engine with quality factor 0.836734693877551)
+
+score =  0.2222222222222222
+
+
+
+---------------------------------------------------------------------------------------
+
+
+
+
+Agents created
+agent2  -  PROPOSE ( Electric Engine 31 )
+agent1  -  ASK_WHY ( Electric Engine 31 )
+agent2  -  ARGUE ( Electric Engine 31, ENVIRONMENT_IMPACT = VERY GOOD )
+agent1  -  ARGUE ( NOT Electric Engine 31, DURABILITY = VERY BAD and DURABILITY > ENVIRONMENT_IMPACT )
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  PROPOSE ( Electric Engine 41 )
+agent2  -  ASK_WHY ( Electric Engine 41 )
+agent1  -  ARGUE ( Electric Engine 41, NOISE = VERY GOOD )
+agent1  -  Stand by, waiting for answers from agent2
+agent2  -  ARGUE ( NOT Electric Engine 41, DURABILITY = VERY BAD and DURABILITY > NOISE )
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  Stand by, waiting for answers from agent2
+agent1  -  Stand by, waiting for answers from agent2
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  Stand by, waiting for answers from agent2
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  Stand by, waiting for answers from agent2
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  Stand by, waiting for answers from agent2
+
+score =  0
+
+
+
+---------------------------------------------------------------------------------------
+
+
+
+
+Agents created
+agent1  -  PROPOSE ( Electric Engine 42 )
+agent2  -  ACCEPT ( Electric Engine 42 )
+agent1  -  COMMIT ( Electric Engine 42 )
+agent2  -  COMMIT ( Electric Engine 42 )
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+Electric Engine 42 (Electric engine with quality factor 0.836734693877551)
+
+score =  0.2222222222222222
+
+
+
+---------------------------------------------------------------------------------------
+
+
+
+
+Agents created
+agent1  -  PROPOSE ( Electric Engine 36 )
+agent2  -  ACCEPT ( Electric Engine 36 )
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  COMMIT ( Electric Engine 36 )
+agent2  -  COMMIT ( Electric Engine 36 )
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+Electric Engine 36 (Electric engine with quality factor 0.7142857142857142)
+
+score =  0.1575757575757576
+
+
+
+---------------------------------------------------------------------------------------
+
+
+
+
+Agents created
+agent2  -  PROPOSE ( Electric Engine 39 )
+agent1  -  ASK_WHY ( Electric Engine 39 )
+agent1  -  Stand by, waiting for answers from agent2
+agent2  -  ARGUE ( Electric Engine 39, CONSUMPTION = VERY GOOD )
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  ARGUE ( NOT Electric Engine 39, PRODUCTION_COST = VERY BAD and PRODUCTION_COST > CONSUMPTION )
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  PROPOSE ( Diesel Engine 23 )
+agent1  -  Stand by, waiting for answers from agent2
+agent2  -  ASK_WHY ( Diesel Engine 23 )
+agent1  -  ARGUE ( Diesel Engine 23, PRODUCTION_COST = VERY GOOD )
+agent2  -  ARGUE ( NOT Diesel Engine 23, COST_PER_KM = VERY BAD and COST_PER_KM > PRODUCTION_COST )
+agent1  -  ARGUE ( Diesel Engine 23, PRODUCTION_COST = VERY GOOD and PRODUCTION_COST > COST_PER_KM )
+agent2  -  ARGUE ( NOT Diesel Engine 23, COST_PER_KM = VERY BAD and COST_PER_KM > PRODUCTION_COST )
+agent1  -  ARGUE ( Diesel Engine 23, PRODUCTION_COST = VERY GOOD and PRODUCTION_COST > COST_PER_KM )
+agent2  -  ARGUE ( NOT Diesel Engine 23, COST_PER_KM = VERY BAD and COST_PER_KM > PRODUCTION_COST )
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  ARGUE ( Diesel Engine 23, PRODUCTION_COST = VERY GOOD and PRODUCTION_COST > COST_PER_KM )
+agent2  -  ARGUE ( NOT Diesel Engine 23, COST_PER_KM = VERY BAD and COST_PER_KM > PRODUCTION_COST )
+agent1  -  ARGUE ( Diesel Engine 23, PRODUCTION_COST = VERY GOOD and PRODUCTION_COST > COST_PER_KM )
+
+score =  0
+
+
+
+---------------------------------------------------------------------------------------
+
+
+
+
+Agents created
+agent1  -  PROPOSE ( Diesel Engine 21 )
+agent2  -  ASK_WHY ( Diesel Engine 21 )
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  ARGUE ( Diesel Engine 21, PRODUCTION_COST = VERY GOOD )
+agent2  -  ARGUE ( NOT Diesel Engine 21, DURABILITY = VERY BAD and DURABILITY > PRODUCTION_COST )
+agent1  -  ARGUE ( Diesel Engine 21, PRODUCTION_COST = VERY GOOD and PRODUCTION_COST > DURABILITY )
+agent2  -  ARGUE ( NOT Diesel Engine 21, DURABILITY = VERY BAD and DURABILITY > PRODUCTION_COST )
+agent1  -  ARGUE ( Diesel Engine 21, PRODUCTION_COST = VERY GOOD and PRODUCTION_COST > DURABILITY )
+agent2  -  ARGUE ( NOT Diesel Engine 21, DURABILITY = VERY BAD and DURABILITY > PRODUCTION_COST )
+agent1  -  ARGUE ( Diesel Engine 21, PRODUCTION_COST = VERY GOOD and PRODUCTION_COST > DURABILITY )
+agent2  -  ARGUE ( NOT Diesel Engine 21, DURABILITY = VERY BAD and DURABILITY > PRODUCTION_COST )
+agent1  -  ARGUE ( Diesel Engine 21, PRODUCTION_COST = VERY GOOD and PRODUCTION_COST > DURABILITY )
+agent1  -  Stand by, waiting for answers from agent2
+agent2  -  ARGUE ( NOT Diesel Engine 21, DURABILITY = VERY BAD and DURABILITY > PRODUCTION_COST )
+agent2  -  Stand by, waiting for answers from agent1
+agent1  -  ARGUE ( Diesel Engine 21, PRODUCTION_COST = VERY GOOD and PRODUCTION_COST > DURABILITY )
+agent1  -  Stand by, waiting for answers from agent2
+agent2  -  ARGUE ( NOT Diesel Engine 21, DURABILITY = VERY BAD and DURABILITY > PRODUCTION_COST )
+agent1  -  ARGUE ( Diesel Engine 21, PRODUCTION_COST = VERY GOOD and PRODUCTION_COST > DURABILITY )
+agent2  -  ARGUE ( NOT Diesel Engine 21, DURABILITY = VERY BAD and DURABILITY > PRODUCTION_COST )
+
+score =  0
+
+
+
+---------------------------------------------------------------------------------------
+
+
+
+
+Agents created
+agent2  -  PROPOSE ( Electric Engine 46 )
+agent1  -  ACCEPT ( Electric Engine 46 )
+agent2  -  COMMIT ( Electric Engine 46 )
+agent1  -  COMMIT ( Electric Engine 46 )
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+agent2  -  Stand by, has agreed with agent1
+agent2  -  Stand by, has agreed with agent1
+agent1  -  Stand by, has agreed with agent2
+Electric Engine 46 (Electric engine with quality factor 0.9183673469387754)
+
+score =  0.4
+
+
+
+---------------------------------------------------------------------------------------
+
+
+
+
