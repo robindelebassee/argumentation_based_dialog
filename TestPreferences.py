@@ -27,3 +27,6 @@ if __name__ == '__main__':
     print('Most preferred item is : {}'.format(agent_pref.most_preferred(engines_list, evaluation_needed=True).get_name()))
     print('Is eletric engine among 10 % preferred items: {}'.format(agent_pref.is_item_among_top_10_percent(electric_engine, item_list=engines_list, evaluation_needed=False)))
     print([item._Item__name for item in agent_pref._Preferences__item_ordered_list])
+    pref_dict = agent_pref.print_preferences_dict(engines_list)
+    for k,v in pref_dict.items():
+        print(k, ':', v)

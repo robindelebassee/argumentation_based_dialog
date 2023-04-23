@@ -170,4 +170,10 @@ class Preferences:
         
         is_top_item = self.__item_ordered_list.index(item) < int(0.1 * len(self.__item_ordered_list)) + 1
         return is_top_item
+    
+    def print_preferences_dict(self, item_list):
+        self.__item_list = item_list
+        self.__criterion_value_list = self.evaluate_items(item_list)
+        self.__item_scores = [item.get_score(self) for item in self.__item_list]
+        return {self.__item_list[index]._Item__name: self.__item_scores[index] for index in range(len(self.__item_list))}
 
