@@ -1,3 +1,6 @@
+import sys
+import time as t
+
 from mesa import Model
 from mesa.time import RandomActivation
 
@@ -23,10 +26,12 @@ class ArgumentAgent(CommunicatingAgent):
         self.list_items = None
         self.interlocutor = None
         self.proposition_made = False
+        self.has_proposed_best = False # Different than previous line, used for when we have to relaunch negociation after fail of the first proposed
         self.has_committed = False
         self.return_commit_received = False
         self.current_argument = None
         self.argumentation = []
+        self.agreed_item = None
         
     def step(self):
         super().step()
@@ -59,6 +64,9 @@ class ArgumentAgent(CommunicatingAgent):
                 sender = new_message.get_exp()
                 self.argumentation.append({'sender': sender, 'content': content})
                 self.counter_argue(content)
+            elif new_message._Message__message_performative == MessagePerformative.STAND_BY and not self.has_proposed_best:
+                proposed_item = self.preferences.most_preferred()
+                self.propose_item(proposed_item)
         elif not self.proposition_made:
             proposed_item = self.preferences.most_preferred()
             self.propose_item(proposed_item)
@@ -81,6 +89,7 @@ class ArgumentAgent(CommunicatingAgent):
         message = Message(self.get_name(), self.interlocutor, MessagePerformative.PROPOSE, item._Item__name)
         self.send_message(message)
         self.proposition_made = True
+        self.has_proposed_best = True
         print(self.get_name(), ' - ', message._Message__message_performative, '(', item._Item__name, ')')
     
     def accept_item(self, item):
@@ -97,6 +106,7 @@ class ArgumentAgent(CommunicatingAgent):
         message = Message(self.get_name(), self.interlocutor, MessagePerformative.COMMIT, item._Item__name)
         self.send_message(message)
         self.has_committed = True
+        self.agreed_item = item
         print(self.get_name(), ' - ', message._Message__message_performative, '(', item._Item__name, ')')
         
     def support_proposal(self, item):
@@ -184,28 +194,27 @@ class ArgumentAgent(CommunicatingAgent):
                         'counter_bd': bool_dec,
                         'item': better_item,
                     }
-            else:
-                worst_crit = comparison.worst_criterion_name
-                if self.preferences.is_preferred_criterion(worst_crit, best_crit):
-                    worst_eval = self.preferences.get_value(item, worst_crit)
-                    if worst_eval.value <= 1 and bool_dec:
-                        counter_cv = CoupleValue(worst_crit, worst_eval)
-                        counter_cmp = Comparison(worst_crit, best_crit)
-                        return {
-                            'couple_value': counter_cv,
-                            'comparison': counter_cmp,
-                            'counter_bd': not bool_dec,
-                            'item': item,
-                        }
-                    elif worst_eval.value >= 2 and not bool_dec:
-                        counter_cv = CoupleValue(worst_crit, worst_eval)
-                        counter_cmp = Comparison(worst_crit, best_crit)
-                        return {
-                            'couple_value': counter_cv,
-                            'comparison': counter_cmp,
-                            'counter_bd': not bool_dec,
-                            'item': item,
-                        }   
+            worst_crit = comparison.worst_criterion_name
+            if self.preferences.is_preferred_criterion(worst_crit, best_crit):
+                worst_eval = self.preferences.get_value(item, worst_crit)
+                if worst_eval.value <= 1 and bool_dec:
+                    counter_cv = CoupleValue(worst_crit, worst_eval)
+                    counter_cmp = Comparison(worst_crit, best_crit)
+                    return {
+                        'couple_value': counter_cv,
+                        'comparison': counter_cmp,
+                        'counter_bd': not bool_dec,
+                        'item': item,
+                    }
+                elif worst_eval.value >= 2 and not bool_dec:
+                    counter_cv = CoupleValue(worst_crit, worst_eval)
+                    counter_cmp = Comparison(worst_crit, best_crit)
+                    return {
+                        'couple_value': counter_cv,
+                        'comparison': counter_cmp,
+                        'counter_bd': not bool_dec,
+                        'item': item,
+                    }   
         # Case : ITEM, C = VALUE
         else:
             best_crit = couple_value.criterion_name
@@ -265,10 +274,10 @@ class ArgumentAgent(CommunicatingAgent):
             if parsed_arg['boolean_decision']:
                 item = self.find_item_from_name(parsed_arg['item_name'])
                 self.accept_item(item)
-            elif not self.proposition_made:
+            elif not self.has_proposed_best:
                 self.propose_item(self.preferences.most_preferred(evaluation_needed=False))
             else:
-                self.stand_by()
+                self.stand_by_propose()
         else:
             bool_dec = counter['counter_bd']
             item_name = counter['item']._Item__name
@@ -279,6 +288,11 @@ class ArgumentAgent(CommunicatingAgent):
             self.argumentation.append({'sender': self.get_name(), 'content': arg_content})
             self.send_message(message)
             print(self.get_name(), ' - ', message._Message__message_performative, '(', arg_content, ')')
+    
+    def stand_by_propose(self):
+        message = Message(self.get_name(), self.interlocutor, MessagePerformative.STAND_BY, 'I am in stand by.')
+        self.send_message(message)
+        print(self.get_name(), ' -  Stand by, waiting for answers from {}'.format(self.interlocutor))
     
     def stand_by(self):
         print(self.get_name(), ' -  Stand by, waiting for answers from {}'.format(self.interlocutor))
@@ -295,24 +309,24 @@ class ArgumentAgent(CommunicatingAgent):
 class ArgumentModel(Model):
     """ ArgumentModel which inherit from Model.
     """
-    def __init__(self):
+    def __init__(self, corpus_size=10):
         self.schedule = RandomActivation(self)
         self.__messages_service = MessageService(self.schedule)
         self.current_id = 0
 
-        corpus = EnginesCorpus(10)
+        corpus = EnginesCorpus(corpus_size)
         list_items = corpus.generate_engines_list()
         
-        agent1 = ArgumentAgent(self.next_id(), self, "agent1")
-        agent1.generate_preferences(list_items)
-        self.schedule.add(agent1)
+        self.agent1 = ArgumentAgent(self.next_id(), self, "agent1")
+        self.agent1.generate_preferences(list_items)
+        self.schedule.add(self.agent1)
         
-        agent2 = ArgumentAgent(self.next_id(), self, "agent2")
-        agent2.generate_preferences(list_items)
-        self.schedule.add(agent2)
+        self.agent2 = ArgumentAgent(self.next_id(), self, "agent2")
+        self.agent2.generate_preferences(list_items)
+        self.schedule.add(self.agent2)
         
-        agent1.set_interlocutor(agent2)
-        agent2.set_interlocutor(agent1)
+        self.agent1.set_interlocutor(self.agent2)
+        self.agent2.set_interlocutor(self.agent1)
 
         self.running = True
 
@@ -324,9 +338,15 @@ class ArgumentModel(Model):
 
 if __name__ == "__main__":
     
+    sys.stdout = open(f'outputs/experiments.txt', 'a')
+        
     argument_model = ArgumentModel()
     print("Agents created")
     for _ in range(10):
         argument_model.step()
+    
+    print('\n\n\n---------------------------------------------------------------------------------------\n\n\n\n')
+    
+    sys.stdout.close()
 
-    # To be completed
+        # To be completed

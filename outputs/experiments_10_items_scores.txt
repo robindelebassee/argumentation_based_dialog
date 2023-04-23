@@ -1,0 +1,10 @@
+score =  1.3333333333333333
+score =  2.0
+score =  2.0
+score =  2.0
+score =  2.0
+score =  0
+score =  0
+score =  2.0
+score =  1.0
+score =  0
