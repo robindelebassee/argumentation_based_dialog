@@ -55,6 +55,9 @@ class Preferences:
         }
         
         self.__criterion_value_list = self.evaluate_items(item_list) if item_list else [] # ordre pas important
+        self.__item_scores = [item.get_score(self) for item in self.__item_list]
+        sorted_score_index = sorted(zip(self.__item_scores,range(len(self.__item_list))), reverse=True)
+        self.__item_ordered_list = [self.__item_list[index] for _,index in sorted_score_index]
         
     
     def evaluate_items(self, item_list):
@@ -164,7 +167,7 @@ class Preferences:
         if not self.__item_scores or item_list:
             self.__item_scores = [item.get_score(self) for item in self.__item_list]
         
-        if not self.__item_ordered_list or item_list:
+        if (not self.__item_ordered_list) or item_list:
             sorted_score_index = sorted(zip(self.__item_scores,range(len(self.__item_list))), reverse=True)
             self.__item_ordered_list = [self.__item_list[index] for _,index in sorted_score_index]
         
@@ -176,4 +179,14 @@ class Preferences:
         self.__criterion_value_list = self.evaluate_items(item_list)
         self.__item_scores = [item.get_score(self) for item in self.__item_list]
         return {self.__item_list[index]._Item__name: self.__item_scores[index] for index in range(len(self.__item_list))}
+    
+    def has_better_item(self, item, criterion, value, bool_dec):           
+        item_index = self.__item_ordered_list.index(item)
+        for candidate_item in self.__item_ordered_list[:item_index]:
+            candidate_value = self.get_value(candidate_item, criterion)
+            if candidate_value.value > value.value and bool_dec:
+                return candidate_item
+            elif candidate_value.value < value.value and not bool_dec:
+                return candidate_item
+        return None
 

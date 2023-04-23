@@ -17,3 +17,11 @@ class Value(Enum):
         member._value_ = value
         member.fullname = name
         return member
+
+
+value_classdict = {
+    'VERY BAD': Value.VERY_BAD,
+    'BAD': Value.BAD,
+    'GOOD': Value.GOOD,
+    'VERY GOOD': Value.VERY_GOOD,
+}

@@ -19,3 +19,13 @@ class CriterionName(Enum):
         member._value_ = value
         member.fullname = name
         return member
+
+
+criterionName_classdict = {
+    'PRODUCTION_COST': CriterionName.PRODUCTION_COST,
+    'CONSUMPTION': CriterionName.CONSUMPTION,
+    'DURABILITY': CriterionName.DURABILITY,
+    'ENVIRONMENT_IMPACT': CriterionName.ENVIRONMENT_IMPACT,
+    'NOISE': CriterionName.NOISE,
+    'COST_PER_KM': CriterionName.COST_PER_KM,
+}
